@@ -8,9 +8,6 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 ReactDOM.render(
     <BrowserRouter>
         <Switch>
-            <Route path={`/dogs`} render={(routeProps) => {
-                return <h1>Dogs</h1>
-            }} />
             <Route path={`/`} component={App} />
         </Switch>
     </BrowserRouter>, document.getElementById('root'));

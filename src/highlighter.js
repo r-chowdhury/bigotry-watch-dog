@@ -8,7 +8,6 @@ export default class Highlighter extends React.Component {
     highlightBadWords = () => {
         const slurs = process.env.REACT_APP_SLURS
         const slurs_array = slurs.split("-")
-        debugger
         let htmlString = this.props.html
         slurs_array.forEach(word => {
             word = word.toLowerCase();

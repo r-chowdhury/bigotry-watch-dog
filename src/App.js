@@ -23,38 +23,57 @@ import handleURLSubmit from "./urlSubmit.js"
 /* Heads up! HomepageHeading uses inline styling, however it's not the best practice. Use CSS or styled components for
  * such things.
  */
-const HomepageHeading = ({ mobile }) => (
+class HomepageHeading extends React.Component {
+
+  constructor() {
+    super()
+    this.state = {htmlString: ""}
+  }
+
+  handleSubmit = (event) => {
+    event.persist();
+    handleURLSubmit(event).then(res => {
+      let htmlStringg = res
+      this.setState({htmlString: htmlStringg})
+    })
+    debugger
+  }
+
+  render (){
+  return (
   <Container text>
     <Header
       as='h1'
-      content='The Uncle Tom Monitor'
+      content='Bigotry Watchdog'
       inverted
       style={{
-        fontSize: mobile ? '2em' : '4em',
+        fontSize: this.props.mobile ? '2em' : '4em',
         fontWeight: 'normal',
         marginBottom: 0,
-        marginTop: mobile ? '1.5em' : '3em',
+        marginTop: this.props.mobile ? '1.5em' : '3em',
       }}
     />
     <Header
       as='h2'
-      content='Please submit the URL to see how bigotted a website is.'
+      content='Please submit the URL.'
       inverted
       style={{
-        fontSize: mobile ? '1.5em' : '1.7em',
+        fontSize: this.props.mobile ? '1.5em' : '1.7em',
         fontWeight: 'normal',
-        marginTop: mobile ? '0.5em' : '1.5em',
+        marginTop: this.props.mobile ? '0.5em' : '1.5em',
       }}
     />
-    <Form onSubmit={e => handleURLSubmit(e)}>
+    <Form onSubmit={e => this.handleSubmit(e)}>
       <Form.Field >
         <label>User Input</label>
         <input />
       </Form.Field>
       <Button>Submit</Button>
     </Form>
+    <Highlighter html={this.state.htmlString}/>
   </Container>
-)
+  
+)}}
 
 HomepageHeading.propTypes = {
   mobile: PropTypes.bool,
@@ -111,7 +130,7 @@ class DesktopContainer extends Component {
                 </Menu.Item>
               </Container>
             </Menu>
-            <HomepageHeading />
+            <HomepageHeading {...this.props}/>
           </Segment>
         </Visibility>
 
@@ -180,7 +199,7 @@ class MobileContainer extends Component {
                   </Menu.Item>
                 </Menu>
               </Container>
-              <HomepageHeading mobile />
+              <HomepageHeading mobile {...this.props}/>
             </Segment>
 
             {children}
@@ -195,19 +214,21 @@ MobileContainer.propTypes = {
   children: PropTypes.node,
 }
 
-const ResponsiveContainer = ({ children }) => (
+const ResponsiveContainer = (props) => {
+  return (
   <div>
-    <DesktopContainer>{children}</DesktopContainer>
-    <MobileContainer>{children}</MobileContainer>
+    <DesktopContainer{...props}>{props.children}</DesktopContainer>
+    <MobileContainer{...props}>{props.children}</MobileContainer>
   </div>
-)
+)}
 
 ResponsiveContainer.propTypes = {
   children: PropTypes.node,
 }
 
-const HomepageLayout = () => (
-  <ResponsiveContainer>
+const HomepageLayout = (props) => {
+  return  (
+  <ResponsiveContainer {...props}>
     <Segment style={{ padding: '8em 0em' }} vertical>
       <Grid container stackable verticalAlign='middle'>
         <Grid.Row>
@@ -238,7 +259,7 @@ const HomepageLayout = () => (
         </Grid.Row>
         <Grid.Row>
           <Grid.Column textAlign='center'>
-            <Highlighter html={`<div><h1>We cannot say niggers.</h1> Nor can we say spics Spics spic</div>`} />
+            <Highlighter html={`<div><h1>You can't say bitch.</h1></div>`} />
           </Grid.Column>
         </Grid.Row>
       </Grid>
@@ -338,6 +359,6 @@ const HomepageLayout = () => (
       </Container>
     </Segment>
   </ResponsiveContainer>
-)
+)}
 
 export default HomepageLayout
